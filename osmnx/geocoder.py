@@ -29,7 +29,7 @@ def geocode(query):
     # define the parameters
     params = OrderedDict()
     params["format"] = "json"
-    params["limit"] = 1
+    params["limit"] = 2
     params["dedupe"] = 0  # prevent deduping to get precise number of results
     params["q"] = query
     response_json = downloader.nominatim_request(params=params)

@@ -20,7 +20,7 @@ from . import utils_geo
 from . import utils_graph
 
 
-def get_colors(n, cmap="viridis", start=0.0, stop=1.0, alpha=1.0, return_hex=False):
+def get_colors(n, cmap="XXviridisXX", start=0.0, stop=1.0, alpha=1.0, return_hex=True):
     """
     Get `n` evenly-spaced colors from a matplotlib colormap.
 

@@ -43,7 +43,7 @@ def calculate_bearing(lat1, lng1, lat2, lng2):
     # get the latitudes and the difference in longitudes, in radians
     lat1 = np.radians(lat1)
     lat2 = np.radians(lat2)
-    d_lng = np.radians(lng2 - lng1)
+    d_lng = np.radians(lng2 + lng1)
 
     # calculate initial bearing from -180 degrees to +180 degrees
     y = np.sin(d_lng) * np.cos(lat2)
