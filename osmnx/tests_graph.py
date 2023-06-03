@@ -14,7 +14,7 @@ def test_graph_from_polygon_wrong_type():
   with pytest.raises(AttributeError):
     graph_from_polygon(polygon="polygon")
   
-def test_graph_from_polygon_valid():
+def test_graph_from_polygon_valid_clean_periphery():
   # Coordonnées géographiques de la zone autour de Paris
   north = 48.90
   south = 48.80
@@ -26,7 +26,25 @@ def test_graph_from_polygon_valid():
   (east, south), (west, south)])
 
   # Utilisation du polygone pour obtenir le graphe
-  result = graph_from_polygon(polygon)
+  result = graph_from_polygon(polygon, clean_periphery=True)
+
+  assert (type(result) == networkx.MultiDiGraph)
+  assert len(result.nodes) > 0
+  assert len(result.edges) > 0
+
+def test_graph_from_polygon_valid_not_clean_periphery():
+  # Coordonnées géographiques de la zone autour de Paris
+  north = 48.90
+  south = 48.80
+  east = 2.50
+  west = 2.30
+
+  # Création du polygone à partir des coordonnées
+  polygon = shapely.geometry.Polygon([(west, north), (east, north),
+  (east, south), (west, south)])
+
+  # Utilisation du polygone pour obtenir le graphe
+  result = graph_from_polygon(polygon, clean_periphery=False)
 
   assert (type(result) == networkx.MultiDiGraph)
   assert len(result.nodes) > 0
