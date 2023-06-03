@@ -1,4 +1,4 @@
-from .folium import plot_graph_folium
+from .folium import plot_graph_folium, plot_route_folium
 from .geocoder import geocode
 from .graph import graph_from_place
 import pytest, networkx, folium
@@ -118,4 +118,35 @@ def test_plot_graph_folium_graph_map_valid_attrfalse():
 
 ############################################################################
 
-################## graph_from_bbox() #######################################
+################## plot_route_folium() #####################################
+
+def test_plot_route_folium_none():
+  with pytest.raises(TypeError):
+    plot_route_folium(G=None, route=None)
+
+def test_plot_route_folium_empty():
+  with pytest.raises(TypeError):
+    G= networkx.MultiDiGraph
+    plot_route_folium(G=G, route=[])
+
+def test_plot_route_folium_invalid():
+  with pytest.raises(ValueError):
+    start = 000000000
+    end = 99999999999999999
+
+    route = [start, end]
+
+    G = graph_from_place('Namur, Belgique', network_type='drive')
+
+    plot_route_folium(G=G, route=route)
+
+def test_plot_route_folium_valid():
+  with pytest.raises(ValueError):
+    G = graph_from_place('Namur, Belgique', network_type='drive')
+
+    start = 145013
+    end = 2479827
+
+    route = [start, end]
+
+    plot_route_folium(G=G, route=route)
