@@ -106,3 +106,10 @@ def test_graph_from_place_valid():
   assert isinstance(graph, networkx.MultiDiGraph)
   assert len(graph.nodes) > 0
   assert len(graph.edges) > 0
+
+def test_graph_from_place_valid_multiple():
+  graph = graph_from_place(["Rue grandgagnage 21, Namur, Belgique", "Rue de Bruxelles 81, Namur, Belgique"])
+
+  assert isinstance(graph, networkx.MultiDiGraph)
+  assert len(graph.nodes) > 0
+  assert len(graph.edges) > 0
