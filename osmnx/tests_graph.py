@@ -1,4 +1,5 @@
-from .graph import graph_from_polygon, graph_from_bbox, graph_from_place, _errors
+from ._errors import EmptyOverpassResponse
+from .graph import graph_from_polygon, graph_from_bbox, graph_from_place
 import pytest, shapely, networkx
 import timeout_decorator
 
@@ -28,13 +29,15 @@ def test_graph_from_polygon_valid():
   result = graph_from_polygon(polygon)
 
   assert (type(result) == networkx.MultiDiGraph)
+  assert len(result.nodes) > 0
+  assert len(result.edges) > 0
 
 ############################################################################
 
 ################## graph_from_bbox() #######################################
 
 def test_graph_from_bbox_empty():
-  with pytest.raises(_errors.EmptyOverpassResponse):
+  with pytest.raises(EmptyOverpassResponse):
     north = 0.0
     south = -1.0
     east = 0.0
