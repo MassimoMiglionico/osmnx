@@ -140,13 +140,14 @@ def test_plot_route_folium_invalid():
 
     plot_route_folium(G=G, route=route)
 
-def test_plot_route_folium_valid():
-  with pytest.raises(ValueError):
-    G = graph_from_place('Namur, Belgique', network_type='drive')
+def test_plot_route_folium_valid(): # déprécié
+  G = graph_from_place('Namur, Belgique', network_type='drive')
 
-    start = 145013
-    end = 2479827
+  start = 145013
+  end = 2479827
 
-    route = [start, end]
+  route = [start, end]
 
-    plot_route_folium(G=G, route=route)
+  result = plot_route_folium(G, route)
+
+  assert result != None
