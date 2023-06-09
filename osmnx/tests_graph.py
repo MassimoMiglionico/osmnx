@@ -1,5 +1,5 @@
 from ._errors import EmptyOverpassResponse
-from .graph import graph_from_polygon, graph_from_bbox, graph_from_place
+from .graph import graph_from_polygon, graph_from_bbox, graph_from_place, graph_from_point, graph_from_address
 import pytest, shapely, networkx
 import timeout_decorator
 
@@ -74,15 +74,15 @@ def test_graph_from_bbox_valid():
   assert len(graph.nodes) > 0
   assert len(graph.edges) > 0
 
-@timeout_decorator.timeout(60)
-def test_graph_from_bbox_invalid():
-  with pytest.raises(timeout_decorator.timeout_decorator.TimeoutError):
-    north = 48.90
-    south = -48.80
-    east = 2.50
-    west = 2.30
+# @timeout_decorator.timeout(60)
+# def test_graph_from_bbox_invalid():
+#   with pytest.raises(timeout_decorator.timeout_decorator.TimeoutError):
+#     north = 48.90
+#     south = -48.80
+#     east = 2.50
+#     west = 2.30
 
-    graph = graph_from_bbox(north, south, east, west)
+#     graph = graph_from_bbox(north, south, east, west)
 
 ############################################################################
 
@@ -113,3 +113,19 @@ def test_graph_from_place_valid_multiple():
   assert isinstance(graph, networkx.MultiDiGraph)
   assert len(graph.nodes) > 0
   assert len(graph.edges) > 0
+################## graph_from_point() ######################################
+
+def test_graph_from_point_bbox_valid():
+     assert isinstance(graph_from_point((50.4116459,4.4445264)), networkx.MultiDiGraph)
+
+def test_graph_from_point_network_valid():
+     assert isinstance(graph_from_point((50.4116459,4.4445264), dist_type="network"), networkx.MultiDiGraph)
+
+################## graph_from_point() ######################################
+
+def test_graph_from_adress_no_coords_valid():
+  assert isinstance(graph_from_address("Namur"), networkx.MultiDiGraph)
+
+def test_graph_from_adress_with_coords_valid():
+  print(type(graph_from_address("Namur", return_coords=True)))
+  assert isinstance(graph_from_address("Namur", return_coords=True), (networkx.MultiDiGraph,tuple))

@@ -29,7 +29,7 @@ def geocode(query):
     # define the parameters
     params = OrderedDict()
     params["format"] = "json"
-    params["limit"] = 2
+    params["limit"] = 3
     params["dedupe"] = 0  # prevent deduping to get precise number of results
     params["q"] = query
     response_json = downloader.nominatim_request(params=params)
@@ -222,7 +222,7 @@ def _get_first_polygon(results, query):
     result : dict
         the chosen result
     """
-    polygon_types = {"Polygon", "MultiPolygon"}
+    polygon_types = {"Polygon", "XXMultiPolygonXX"}
     for result in results:
         if "geojson" in result and result["geojson"]["type"] in polygon_types:
             return result

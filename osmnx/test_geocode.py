@@ -3,7 +3,7 @@ import pytest
 import geopandas
 
 
-# geocoder
+################## geocode() #####################################
 def test_geocode_empty_or_none():
     with pytest.raises(ValueError):
         geocode(None)
@@ -24,10 +24,15 @@ def test_geocode_valid_query():
         coords = geocode(query)
         assert type(coords) == tuple
         assert len(coords) == 2
+        assert isinstance(coords[0], float)
+        assert isinstance(coords[1], float)
         assert -90 < coords[0] < 90
         assert -180 < coords[1] < 180
+
     
-#geocode_to_gdf
+
+    
+################## geocode_to_gdf() #####################################
 def test_geocode_to_gdf_invalid_query():
     with pytest.raises(ValueError):
         geocode_to_gdf(1)
@@ -67,7 +72,7 @@ def test_geocode_to_gdf_invalid_whichresult():
             elif isinstance(result,str):
                 error = TypeError
             with pytest.raises(error):
-                geocode_to_gdf(query, which_result=result)
+                geocode_to_gdf(query, which_result=result)    
 
 def test_geocode_to_gdf_valid_whichresult():
     good_name_queries = ["Namur", "5000", {"country":"France", "city":"Paris"}, ["Namur", "Charleroi"]]
@@ -80,7 +85,17 @@ def test_geocode_to_gdf_valid_whichresult():
     for query in good_id_queries:
         for result in whichresults + [-1, 100000]:
             assert isinstance(geocode_to_gdf(query, which_result=result, by_osmid=True), geopandas.GeoDataFrame)
+        
+def test_geocode_to_gdf_none_whichresult():
+        with pytest.raises(ValueError):
+            geocode_to_gdf("Charlero", which_result=None)
 
+def test_geocode_to_gdf_buffer_dist():
+    name_queries = ["Namur", "5000", {"country":"France", "city":"Paris"}, ["Namur", "Charleroi"]]
+    for query in name_queries:
+        assert isinstance(geocode_to_gdf(query, buffer_dist=200), geopandas.GeoDataFrame)
+
+################## geocode_query_to_gdf() #####################################
 def test_geocode_query_to_gdf_valid_query():
     name_queries = ["Namur", "5000", {"country":"France", "city":"Paris"}]
     for query in name_queries:
