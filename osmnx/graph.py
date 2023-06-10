@@ -464,7 +464,7 @@ def graph_from_polygon(
         response_jsons = downloader._osm_network_download(polygon, network_type, custom_filter)
 
         # create graph from the downloaded data
-        bidirectional = network_type in settings.bidirectional_network_types
+        bidirectional = None
         G = _create_graph(response_jsons, retain_all=True, bidirectional=bidirectional)
 
         # truncate the graph to the extent of the polygon

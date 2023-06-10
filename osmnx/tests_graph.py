@@ -1,3 +1,6 @@
+import unittest
+
+from . import geocode, plot_graph_route, shortest_path, nearest_nodes
 from ._errors import EmptyOverpassResponse
 from .graph import graph_from_polygon, graph_from_bbox, graph_from_place, graph_from_point, graph_from_address
 import pytest, shapely, networkx
@@ -129,3 +132,25 @@ def test_graph_from_adress_no_coords_valid():
 def test_graph_from_adress_with_coords_valid():
   print(type(graph_from_address("Namur", return_coords=True)))
   assert isinstance(graph_from_address("Namur", return_coords=True), (networkx.MultiDiGraph,tuple))
+
+
+def test_draw_route():
+  start = geocode("Rue de la Sauveniere 19, 6032")
+  end = geocode("Rue Saint-Valentin 57, 6061")
+
+  map = graph_from_place("Charleroi, Belgique", network_type="drive")
+
+  start_node = nearest_nodes(map, start[1], start[0])
+  end_node = nearest_nodes(map, end[1], end[0])
+
+  print(start_node, end_node)
+
+  route = shortest_path(G=map, orig=start_node, dest=end_node)
+
+  result = plot_graph_route(map, route)
+
+  assert type(result) == tuple
+  assert len(result) == 2
+
+  for node in [start_node, end_node]:
+    assert node in map.nodes
