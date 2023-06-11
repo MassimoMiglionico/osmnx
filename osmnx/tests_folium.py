@@ -1,4 +1,3 @@
-from . import nearest_nodes, shortest_path
 from .folium import plot_graph_folium, plot_route_folium
 from .geocoder import geocode
 from .graph import graph_from_place
@@ -147,7 +146,7 @@ def test_plot_route_folium_valid(): # déprécié
   start = 145013
   end = 2479827
 
-  route = shortest_path(G, start, end)
+  route = [start, end]
 
   result = plot_route_folium(G, route)
 
